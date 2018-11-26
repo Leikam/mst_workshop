@@ -1,5 +1,5 @@
-import { observable, computed, action } from 'mobx';
-import { types } from 'mobx-state-tree';
+import { observable, computed, action } from "mobx";
+import { types } from "mobx-state-tree";
 
 // export class TodoStore {
 //     @observable todos = [];
@@ -37,42 +37,42 @@ import { types } from 'mobx-state-tree';
 // }
 
 const Todo = types
-    .model('Todo', {
-        id: types.optional(types.number, Math.random()),
-        title: types.string,
-        done: types.optional(types.boolean, false)
-    })
-    .actions(self => {
-        return {
-            toggle: () => {
-                self.done = !self.done;
-            }
-        };
-    });
+  .model("Todo", {
+    id: types.optional(types.number, Math.random()),
+    title: types.string,
+    done: types.optional(types.boolean, false)
+  })
+  .actions(self => {
+    return {
+      toggle: () => {
+        self.done = !self.done;
+      }
+    };
+  });
 
 export const TodoStore = types
-    .model('TodoStore', {
-        todos: types.optional(types.array(Todo), [])
-    })
-    .actions(self => {
-        return {
-            addTodo: title => {
-                self.todos.push(Todo.create({ title: title }));
-            },
-            markAllCompleted: () => {
-                self.todos.forEach(todo => {
-                    todo.done = true;
-                });
-            }
-        };
-    })
-    .views(self => {
-        return {
-            get unfinishedTodoCount() {
-                console.log("Computed amount of todo's left");
-                return self.todos.filter(todo => !todo.done).length;
-            }
-        };
-    });
+  .model("TodoStore", {
+    todos: types.optional(types.array(Todo), [])
+  })
+  .actions(self => {
+    return {
+      addTodo: title => {
+        self.todos.push(Todo.create({ id: Math.random(), title: title }));
+      },
+      markAllCompleted: () => {
+        self.todos.forEach(todo => {
+          todo.done = true;
+        });
+      }
+    };
+  })
+  .views(self => {
+    return {
+      get unfinishedTodoCount() {
+        console.log("Computed amount of todo's left");
+        return self.todos.filter(todo => !todo.done).length;
+      }
+    };
+  });
 
 // const todoStoreImpl = MyTodoStore.create();
